@@ -60,12 +60,12 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global NOBACKOUT
     global GREETING
     global AHGRAND
-		global GOOD_IDEA
-		global HUH
-		
-		global TRIGGER_HELLO
-		global TRIGGER_YES
-		global TRIGGER_TEA
+    global GOOD_IDEA
+    global HUH
+    
+    global TRIGGER_HELLO
+    global TRIGGER_YES
+    global TRIGGER_TEA
     
     global roster
     global teacountdown
@@ -113,16 +113,16 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     
 class DoThis(webapp.RequestHandler):
     def post(self):
-		  global ON_YOUR_OWN
-			global WELL_VOLUNTEERED
-			global OTHEROFFERED
-			
+      global ON_YOUR_OWN
+      global WELL_VOLUNTEERED
+      global OTHEROFFERED
+      
       global drinkers
       global teacountdown
       teamaker = random.sample(drinkers, 1)[0]
       
       if drinkers == set([teamaker]):
-			  send_random(teamaker, ON_YOUR_OWN)
+        send_random(teamaker, ON_YOUR_OWN)
       else:      
         for person in drinkers:
           if person == teamaker:
@@ -139,14 +139,14 @@ class DoThis(webapp.RequestHandler):
 class Register(webapp.RequestHandler):
     def post(self):
       global WANT_TEA
-			global roster
+      global roster
       global teacountdown
-			
+      
       person = self.request.get('from').split("/")[0]
       roster.add(person)
       
       if(teacountdown):
-			  send_random(person, WANT_TEA)
+        send_random(person, WANT_TEA)
       
 def main():
   app = webapp.WSGIApplication([
