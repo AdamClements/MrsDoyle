@@ -23,7 +23,7 @@ teacountdown = False
 # Trigger words
 TRIGGER_HELLO = r"hi|hello|morning|afternoon|evening"
 TRIGGER_YES = r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|yup|affirmative|yarr|yah|please|sure"
-TRIGGER_TEA = r"cuppa|tea|brew|the good stuff|"
+TRIGGER_TEA = r"cuppa|tea|brew"
 
 # Responses
 GREETING = set(["Well hello dear", "Top o' the mornin' to ya", "Hello", "Hi", "Good morning father", "Beautiful day outside isn't it?", "I'm feeling fat, and sassy"])
