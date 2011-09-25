@@ -17,7 +17,6 @@ from google.appengine.api.taskqueue import Task
 from pprint import pprint 
 
 roster = set([])
-potentialDrinkers = set([])
 drinkers = set([])
 teacountdown = False
 
@@ -27,34 +26,14 @@ class XmppHandler(xmpp_handlers.CommandHandler):
   def unhandled_command(self, message=None):
     # Show help text
     message.reply("I don't have any secret easter egg commands.....")
-    
-  def getprefs_command(self, message=None):
-    getTeaPreference(self.request.get('from').split("/")[0])
-    
+        
   def debug_command(self, message=None):
     global roster
     global drinkers
     global teacountdown
-    global potentialDrinkers
     message.reply("Roster: " + ", ".join(roster))
     message.reply("Drinkers: " + ", ".join(drinkers))
-    message.reply("Updatedonline: " + ", ".join(potentialDrinkers))
     message.reply("CountingDown " + str(teacountdown))
-    
-  def listonline_command(self, message=None):
-    global potentialDrinkers
-    potentialDrinkers = set([])
-    for person in roster:
-      xmpp.send_presence(jid=person, presence_type = xmpp.PRESENCE_TYPE_PROBE)
-    for person in potentialDrinkers:
-        message.reply(person + " is online")
-        
-  def testsave_command(self, message=None):
-    setTeaPreference("test", message.body)
-    message.reply("raoeu")
-    
-  def testrestore_command(self, message=None):
-    message.reply("got " + getTeaPreference("test"))
 
   def text_message(self, message=None):
     global someone
@@ -70,7 +49,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         message.reply("You are already in the list of tea drinkers. there's no getting out of it now.")
         return
     
-      if re.search(r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|yup|affirmative|yarr|yah|please", message.body, re.IGNORECASE):
+      if re.search(r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|yup|affirmative|yarr|yah|please|sure", message.body, re.IGNORECASE):
         drinkers.add(fromaddr)
         message.reply("Ah, grand! I'll wait a couple of minutes and see if anyone else wants one")
       else:
@@ -81,15 +60,26 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       
       for person in roster:
         if not person == fromaddr:
-          xmpp.send_message(person, "Will you have a cup of tea??")
+          xmpp.send_presence(jid=person, presence_type = xmpp.PRESENCE_TYPE_PROBE)
           
-          doittask = Task(countdown="120", url="/maketea")
-          doittask.add()
-          teacountdown = True
+      doittask = Task(countdown="120", url="/maketea")
+      doittask.add()
+      teacountdown = True
+      
     elif re.search(r"hi|hello|morning|afternoon|evening", message.body, re.IGNORECASE):
       message.reply("Top o' the morning to ya")
     else:
       message.reply("I don't understand what you're saying.... ")
+    
+  def attemptsend_command(self, message=None):    
+		global teacountdown
+		global roster
+    for person in roster:
+      xmpp.send_presence(jid=person, presence_type = xmpp.PRESENCE_TYPE_PROBE)
+    
+    doittask = Task(countdown="15", url="/maketea")
+    doittask.add()
+    teacountdown = True
     
 class DoThis(webapp.RequestHandler):
     def post(self):
@@ -115,20 +105,17 @@ class DoThis(webapp.RequestHandler):
 class Register(webapp.RequestHandler):
     def post(self):
       global roster
+			global teacountdown
       person = self.request.get('from').split("/")[0]
       roster.add(person)
+			
+			if(teacountdown):
+				xmpp.send_message(person, "Will you have a cup of tea??")  
       
-class PopulateProbe(webapp.RequestHandler):
-    def post(self):
-      global potentialDrinkers
-      person = self.request.get('from').split("/")[0]
-      potentialDrinkers.add(person)
-
 def main():
   app = webapp.WSGIApplication([
       ('/maketea', DoThis),
       ('/_ah/xmpp/message/chat/', XmppHandler),
-      ('/_ah/xmpp/presence/probe/', PopulateProbe),
       ('/_ah/xmpp/presence/available/', Register),
       ('/_ah/xmpp/subscription/subscribe/', Register),
       ], debug=True)

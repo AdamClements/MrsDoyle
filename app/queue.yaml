@@ -1,0 +1,7 @@
+# configure the default queue
+- name: default
+  rate: 1/s
+  retry_parameters:
+    # task will stop retrying ONLY when BOTH LIMITS ARE REACHED
+    task_retry_limit: 0
+    task_age_limit: 5s
