@@ -22,7 +22,7 @@ teacountdown = False
 
 # Trigger words
 TRIGGER_HELLO = r"hi|hello|morning|afternoon|evening"
-TRIGGER_YES = r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|yup|affirmative|yarr|yah|please|sure"
+TRIGGER_YES = r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|yup|affirmative|yarr|yah|please|sure|okay|alright|yep|go on"
 TRIGGER_TEA = r"cuppa|tea|brew"
 
 # Responses
@@ -81,7 +81,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     
       if re.search(TRIGGER_YES, message.body, re.IGNORECASE):
         drinkers.add(fromaddr)
-        send_random(fromaddr, AH_GRAND)
+        send_random(fromaddr, AHGRAND)
       else:
         send_random(fromaddr, AH_GO_ON)
     elif re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
