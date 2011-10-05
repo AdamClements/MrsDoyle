@@ -19,6 +19,7 @@ from pprint import pprint
 drinkers = set([])
 settingprefs = set([])
 teacountdown = False
+doublejeopardy = ""
 
 # Trigger words
 TRIGGER_HELLO = r"hi|hello|morning|afternoon|evening"
@@ -172,11 +173,19 @@ class DoThis(webapp.RequestHandler):
       
       global drinkers
       global teacountdown
-      teamaker = random.sample(drinkers, 1)[0]
+      global doublejeopardy      
       
-      if drinkers == set([teamaker]):
-        send_random(teamaker, ON_YOUR_OWN)
+      if len(drinkers) == 1:
+        send_random(drinkers[0], ON_YOUR_OWN)
+      elif len(drinkers) == 0:
+        # Probably complain... but let's just reset instead
       else:      
+        # Select someone who wasn't the last person to make the tea
+        teamaker = doublejeopardy
+        while teamaker == doublejeopardy:
+          teamaker = random.sample(drinkers, 1)[0]      
+        doublejeopardy = teamaker
+        
         for person in drinkers:
           if person == teamaker:
             send_random(person, WELL_VOLUNTEERED)
