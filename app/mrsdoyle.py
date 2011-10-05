@@ -44,9 +44,11 @@ def send_random(recipient, choices, prefix=""):
   
 class Roster(db.Model):
   jid = db.StringProperty(required=True)
+  teaprefs = db.StringProperty(required=False, default="")
+  askme = db.BooleanProperty(required=False, default=True)
 
 def get_roster():
-  return Roster.all().fetch(limit=99)
+  return Roster.all().fetch(limit=999)
       
 class XmppHandler(xmpp_handlers.CommandHandler):
   """Handler class for all XMPP activity."""
@@ -78,7 +80,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global teacountdown
     global drinkers
     
-    fromaddr = self.request.get('from')    
+    fromaddr = self.request.get('from').split("/")[0]    
     Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
     
     # Mrs Doyle takes no crap
@@ -101,7 +103,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       drinkers.add(fromaddr)
       
       for person in get_roster():
-        if not person.jid == fromaddr:
+        if person.askme and not person.jid == fromaddr:
           xmpp.send_presence(jid=person.jid, presence_type = xmpp.PRESENCE_TYPE_PROBE)
           
       doittask = Task(countdown="120", url="/maketea")
@@ -127,7 +129,7 @@ class DoThis(webapp.RequestHandler):
         send_random(teamaker, ON_YOUR_OWN)
       else:      
         for person in drinkers:
-          if person.split("/")[0] == teamaker.split("/")[0]:
+          if person == teamaker:
             send_random(person, WELL_VOLUNTEERED)
             for drinker in drinkers:
               if drinker != person:
@@ -141,10 +143,9 @@ class DoThis(webapp.RequestHandler):
 class Register(webapp.RequestHandler):
     def post(self):
       global WANT_TEA
-      global roster
       global teacountdown
       
-      fromaddr = self.request.get('from')    
+      fromaddr = self.request.get('from').split("/")[0]    
       Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
       
       if(teacountdown):
