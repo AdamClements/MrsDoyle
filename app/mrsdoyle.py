@@ -54,6 +54,28 @@ class Roster(db.Model):
 
 def get_roster():
   return Roster.all().fetch(limit=999)
+  
+def howTheyLikeItClause(message, talker):
+  global TRIGGER_TEAPREFS
+  global HOW_TO_TAKE_IT
+  
+  fromaddr = talker.jid
+  
+  # Try to work out if this includes a how they like it clause
+  clauses = message.split(",")
+  if len(clauses) > 1:
+    del clauses[0]
+    secondSentence = " ".join(clauses)
+    if re.search(TRIGGER_TEAPREFS, secondSentence, re.IGNORECASE):
+      talker.teaprefs = secondSentence
+      talker.put()
+      return
+      
+  # If they haven't given any preferences before
+  if talker.teaprefs == "":
+    send_random(fromaddr, HOW_TO_TAKE_IT)
+    settingprefs.add(fromaddr)
+    return   
       
 class XmppHandler(xmpp_handlers.CommandHandler):
   """Handler class for all XMPP activity."""
@@ -86,6 +108,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     
     global teacountdown
     global drinkers
+    global settingprefs
     
     fromaddr = self.request.get('from').split("/")[0]    
     talker = Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
@@ -95,6 +118,13 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     # Mrs Doyle takes no crap
     if re.search(TRIGGER_RUDE, message.body, re.IGNORECASE):
       send_random(fromaddr, RUDE)
+      return
+      
+    # See if we're expecting an answer as regards tea preferences
+    if fromaddr in settingprefs:
+      talker.teaprefs = message.body
+      talker.put()
+      settingprefs.remove(fromaddr)
       return
     
     if teacountdown:    
@@ -110,11 +140,15 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     
       if re.search(TRIGGER_YES, message.body, re.IGNORECASE):
         drinkers.add(fromaddr)
-        send_random(fromaddr, AHGRAND)
+        send_random(fromaddr, AHGRAND)        
+        howTheyLikeItClause(message.body, talker)       
+        
       else:
         send_random(fromaddr, AH_GO_ON)
     elif re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
       send_random(fromaddr, GOOD_IDEA)
+      howTheyLikeItClause(message.body, talker)
+      
       drinkers.add(fromaddr)
       
       for person in get_roster():
@@ -148,12 +182,14 @@ class DoThis(webapp.RequestHandler):
             send_random(person, WELL_VOLUNTEERED)
             for drinker in drinkers:
               if drinker != person:
-                xmpp.send_message(person, drinker.split("@")[0].title())
+                teapref = Roster.get(drinker).teaprefs
+                xmpp.send_message(person, drinker.split("@")[0].title() + "("+teapref+")")
           else:
             send_random(person, OTHEROFFERED, teamaker.split("@")[0].title())
         
       teacountdown = False     
       drinkers = set([])
+      settingprefs = set([])
 
 class Register(webapp.RequestHandler):
     def post(self):
