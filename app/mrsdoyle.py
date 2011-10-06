@@ -176,8 +176,9 @@ class DoThis(webapp.RequestHandler):
       global doublejeopardy      
       
       if len(drinkers) == 1:
-        send_random(drinkers[0], ON_YOUR_OWN)
-      elif len(drinkers) != 0:
+        for n in drinkers:
+          send_random(n, ON_YOUR_OWN)
+      elif len(drinkers) > 0:
         # Select someone who wasn't the last person to make the tea
         teamaker = doublejeopardy
         while teamaker == doublejeopardy:
