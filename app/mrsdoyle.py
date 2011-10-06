@@ -208,7 +208,7 @@ class Register(webapp.RequestHandler):
       Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
       
       if(teacountdown):
-        send_random(person, WANT_TEA)
+        send_random(fromaddr, WANT_TEA)
       
 def main():
   app = webapp.WSGIApplication([
