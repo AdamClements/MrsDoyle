@@ -190,7 +190,8 @@ class DoThis(webapp.RequestHandler):
             send_random(person, WELL_VOLUNTEERED)
             for drinker in drinkers:
               if drinker != person:
-                teapref = Roster.get(drinker).teaprefs
+                temp = Roster.get_by_key_name(drinker)
+                teapref = temp.teaprefs
                 xmpp.send_message(person, drinker.split("@")[0].title() + "("+teapref+")")
           else:
             send_random(person, OTHEROFFERED, teamaker.split("@")[0].title())
