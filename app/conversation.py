@@ -1,11 +1,11 @@
 
 # Trigger words
-TRIGGER_HELLO = r"hi|hello|morning|afternoon|evening"
+TRIGGER_HELLO = r"hi|hello|morning|afternoon|evening|hey|sup"
 TRIGGER_YES = r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|yup|affirmative|yarr|yah|please|sure|okay|alright|yep|go on|certainly"
 TRIGGER_TEA = r"cuppa|tea|brew|cup|drink|beverage|refreshment"
 TRIGGER_GOAWAY = r"go away|busy|from home|not today"
 TRIGGER_TEAPREFS = r"milk|sugar|white|black|roibos"
-TRIGGER_RUDE = r"fuck|shit|bollocks|bitch|bastard|penis|cock|hell |piss|retard|cunt|swype|coffee"
+TRIGGER_RUDE = r"fuck|shit|bollocks|bitch|bastard|penis|cock|hell |piss|retard|cunt|swype|coffee|nuance"
 #(I apologise for any offence caused, but we had to be comprehensive in order to rebuke the foul mouthed)
 
 # Responses
@@ -26,7 +26,10 @@ WANT_TEA = set ([
   "Tea perchance?", 
   "Could I interest you in a brew?", 
   "Hot beverage?", 
-  "Tea for two, two for tea... will you join us?"])
+  "Tea for two, two for tea... will you join us?",
+  "What would you say to a cup father?",
+  "There's always time for a nice cup of tea. Sure, didn't the Lord himself pause for a nice cup of tea before giving himself up for the world. ",
+  "Fancy a cup o' the hot stuff?"])
   
 NOBACKOUT = set([
   "I heard you already, tea's coming up",
@@ -53,7 +56,8 @@ AH_GO_ON = set([
   "It's no bother, really", 
   "It would make me so happy if you'd just have a cup", 
   "A cup of tea a day keeps the doctor away.", 
-  "Go on, it'll do you a world of good."])
+  "Go on, it'll do you a world of good.",
+  "Are you sure, Father? There's cocaine in it! "])
   
 GOOD_IDEA = set([
   "Fantastic idea, I'll see who else wants one and get back to you in a couple of minutes", 
@@ -94,13 +98,19 @@ HUH = set([
   "Is there something I can do for you?",
   "Are you sure you're speaking English?",
   "Now really, whatever does that mean?",
-  "I'm afraid I'm just not familiar with this new slang you young people use."])
+  "I'm afraid I'm just not familiar with this new slang you young people use.",
+  "Oh, no, not cocaine. God, what am I on about? No, what d'you call them. Raisins. ",
+  "Football, football, football, football, football, football, football, football, football... what you men see in it, I don't know. ",
+  "You always say that!"])
   
 RUDE = set([
   "Now that's no way to talk to a lady",
   "Wash your mouth out with soap and water!",
   "Well that's not very polite is it?",
-  "You won't get any tea talking like that!"])
+  "You won't get any tea talking like that!",
+  "Ah, it's a bit much for me, father. 'Feck' this and 'feck' that. 'You big bastard'. Oh, dreadful language! 'You big hairy arse', 'You big fecker'. Fierce stuff! And of course, the f-word, father, the bad f-word, worse than 'feck' - you know the one I mean.",
+  "'Eff you'. 'Eff your 'effin' wife'. Oh, I don't know why they have to use language like that. 'I'll stick this 'effin' pitchfork up your hole', oh, that was another one, oh, yes!",
+  "'Ride me sideways' was another one!"])
   
 HOW_TO_TAKE_IT = set([
   "How do you take your tea?",
