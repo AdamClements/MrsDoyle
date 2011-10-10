@@ -57,15 +57,10 @@ class XmppHandler(xmpp_handlers.CommandHandler):
   """Handler class for all XMPP activity."""
 
   def unhandled_command(self, message=None):
-    # Show help text
     message.reply("I don't have any secret easter egg commands.....")
-    
         
   def debug_command(self, message=None):
-    global drinkers
-    global teacountdown
-    message.reply("Drinkers: " + ", ".join(drinkers))
-    message.reply("CountingDown " + str(teacountdown))   
+    message.reply("In order to save your soul, the temptation to game the system has been removed and Mrs Doyle is now inscrutable")
 
   def text_message(self, message=None):
     global NOBACKOUT
