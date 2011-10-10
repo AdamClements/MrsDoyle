@@ -13,6 +13,7 @@ from google.appengine.ext.webapp import xmpp_handlers
 from google.appengine.api.taskqueue import Task
 
 from conversation import *
+from stats import *
 
 drinkers = set([])
 settingprefs = set([])
@@ -64,7 +65,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global drinkers
     global teacountdown
     message.reply("Drinkers: " + ", ".join(drinkers))
-    message.reply("CountingDown " + str(teacountdown))
+    message.reply("CountingDown " + str(teacountdown))   
 
   def text_message(self, message=None):
     global NOBACKOUT
@@ -152,7 +153,7 @@ class DoThis(webapp.RequestHandler):
       if len(drinkers) == 1:
         for n in drinkers:
           send_random(n, ON_YOUR_OWN)
-      elif len(drinkers) > 0:
+      elif len(drinkers) > 0:        
         # Select someone who wasn't the last person to make the tea
         teamaker = doublejeopardy
         while teamaker == doublejeopardy:
@@ -162,6 +163,9 @@ class DoThis(webapp.RequestHandler):
         for person in drinkers:
           if person == teamaker:
             send_random(person, WELL_VOLUNTEERED)
+            statMaker(person)
+            statRound(person, len(drinkers))
+            
             for drinker in drinkers:
               if drinker != person:
                 temp = Roster.get_by_key_name(drinker)
@@ -169,6 +173,7 @@ class DoThis(webapp.RequestHandler):
                 xmpp.send_message(person, drinker.split("@")[0].title() + "("+teapref+")")
           else:
             send_random(person, OTHEROFFERED, teamaker.split("@")[0].title())
+            statDrinker(person)
         
       teacountdown = False     
       drinkers = set([])
