@@ -1,6 +1,7 @@
 from google.appengine.ext import db
 
 class PerUserStats(db.Model):
+  date = db.DateTimeProperty(auto_now_add=True)
   cupsMade = db.IntegerProperty(default=0)
   cupsDrunk = db.IntegerProperty(default=0)
   
