@@ -150,11 +150,8 @@ class DoThis(webapp.RequestHandler):
           send_random(n, ON_YOUR_OWN)
       elif len(drinkers) > 0:        
         # Select someone who wasn't the last person to make the tea
-        teamaker = doublejeopardy
-        while teamaker == doublejeopardy:
-          teamaker = random.sample(drinkers, 1)[0]      
-        doublejeopardy = teamaker
-        
+        doublejeopardy = teamaker = random.sample(filter(lambda n : n != doublejeopardy), 1)[0]
+
         for person in drinkers:
           if person == teamaker:
             send_random(person, WELL_VOLUNTEERED)
