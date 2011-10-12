@@ -28,7 +28,6 @@ WANT_TEA = set ([
   "Hot beverage?", 
   "Tea for two, two for tea... will you join us?",
   "What would you say to a cup father?",
-  "There's always time for a nice cup of tea. Sure, didn't the Lord himself pause for a nice cup of tea before giving himself up for the world. ",
   "Fancy a cup o' the hot stuff?"])
   
 NOBACKOUT = set([
@@ -109,8 +108,7 @@ RUDE = set([
   "Well that's not very polite is it?",
   "You won't get any tea talking like that!",
   "Ah, it's a bit much for me, father. 'Feck' this and 'feck' that. 'You big bastard'. Oh, dreadful language! 'You big hairy arse', 'You big fecker'. Fierce stuff! And of course, the f-word, father, the bad f-word, worse than 'feck' - you know the one I mean.",
-  "'Eff you'. 'Eff your 'effin' wife'. Oh, I don't know why they have to use language like that. 'I'll stick this 'effin' pitchfork up your hole', oh, that was another one, oh, yes!",
-  "'Ride me sideways' was another one!"])
+  "'Eff you'. 'Eff your 'effin' wife'. Oh, I don't know why they have to use language like that. 'I'll stick this 'effin' pitchfork up your hole', oh, that was another one, oh, yes!",])
   
 HOW_TO_TAKE_IT = set([
   "How do you take your tea?",
