@@ -13,20 +13,15 @@ class PerRoundStats(db.Model):
   maker = db.StringProperty(required=True)
   cups = db.IntegerProperty(required=True)
   
-def statDrinker(name, maker=False):
+def statDrinker(name, made=0):
   totals = PerUserTotals.get_or_insert(key_name=name)
   totals.cupsDrunk = totals.cupsDrunk + 1
-  if maker:
-    totals.cupsMade = totals.cupsMade + 1  
+  totals.cupsMade  = totals.cupsMade + made  
   totals.put()
   
   drinkerStats = PerUserStats(drinker=name)
   drinkerStats.put()
-  
-  
-def statMaker(name):
-  statDrinker(name, True)  
-  
+    
 def statRound(pName, pCups):
   newRound = PerRoundStats(maker=pName, cups=pCups)
   newRound.put()

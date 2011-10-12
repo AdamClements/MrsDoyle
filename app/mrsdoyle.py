@@ -155,8 +155,8 @@ class DoThis(webapp.RequestHandler):
         for person in drinkers:
           if person == teamaker:
             send_random(person, WELL_VOLUNTEERED)
-            statMaker(person)
-            statRound(person, len(drinkers))
+            statDrinker(person, len(drinkers))
+            statRound  (person, len(drinkers))
             
             for drinker in drinkers:
               if drinker != person:
