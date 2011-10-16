@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 import random
 import re
 import wsgiref.handlers
@@ -19,6 +19,7 @@ drinkers = set([])
 settingprefs = set([])
 teacountdown = False
 doublejeopardy = ""
+lastround = datetime.now()
 
 def send_random(recipient, choices, prefix=""):
   xmpp.send_message(recipient, prefix + random.sample(choices, 1)[0])
@@ -31,7 +32,7 @@ class Roster(db.Model):
 def get_roster():
   return Roster.all().fetch(limit=999)
   
-def howTheyLikeItClause(message, talker):
+def howTheyLikeItClause(messago, talker):
   global TRIGGER_TEAPREFS
   global HOW_TO_TAKE_IT
   
@@ -107,6 +108,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global HUH
     global RUDE
     global NO_TEA_TODAY
+    global JUST_MISSED
     
     global TRIGGER_HELLO
     global TRIGGER_YES
@@ -117,6 +119,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global teacountdown
     global drinkers
     global settingprefs
+    global lastround
     
     fromaddr = self.request.get('from').split("/")[0]    
     talker = Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
@@ -154,6 +157,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         
       else:
         send_random(fromaddr, AH_GO_ON)
+        
     elif re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
       send_random(fromaddr, GOOD_IDEA)
       howTheyLikeItClause(message.body, talker)
@@ -170,6 +174,10 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       
     elif re.search(TRIGGER_HELLO, message.body, re.IGNORECASE):
       send_random(fromaddr, GREETING)
+      
+    elif re.search(TRIGGER_YES, message.body, re.IGNORECASE) and (datetime.now() - lastround) < timedelta(seconds=120):
+      send_random(fromaddr, JUST_MISSED)
+      
     else:
       send_random(fromaddr, HUH)
     
@@ -181,7 +189,8 @@ class DoThis(webapp.RequestHandler):
       
       global drinkers
       global teacountdown
-      global doublejeopardy      
+      global doublejeopardy    
+      global lastround  
       
       if len(drinkers) == 1:
         for n in drinkers:
@@ -208,6 +217,7 @@ class DoThis(webapp.RequestHandler):
       teacountdown = False     
       drinkers = set([])
       settingprefs = set([])
+      lastround = datetime.now()
 
 class Register(webapp.RequestHandler):
     def post(self):

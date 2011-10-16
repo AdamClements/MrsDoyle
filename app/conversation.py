@@ -98,8 +98,6 @@ HUH = [
   "Are you sure you're speaking English?",
   "Now really, whatever does that mean?",
   "I'm afraid I'm just not familiar with this new slang you young people use.",
-  "Oh, no, not cocaine. God, what am I on about? No, what d'you call them. Raisins. ",
-  "Football, football, football, football, football, football, football, football, football... what you men see in it, I don't know. ",
   "You always say that!"]
   
 RUDE = [
@@ -113,9 +111,17 @@ RUDE = [
 HOW_TO_TAKE_IT = [
   "How do you take your tea?",
   "And how do you take it?",
-  "How do you like it?"]
+  "How do you like it?",
+  "Milk? Sugar? Lemon? Shaken? Stirred anticlockwise?"]
   
 NO_TEA_TODAY = [
   ":( Alright, I won't bother you again. Say hello if you change your mind",
   "Oh... I'm sorry, I'll leave you alone. Let me know if you change your mind though"]
+  
+JUST_MISSED = [
+  "Sorry dear, too late!",
+  "I'm afraid that ship has sailed...",
+  "Too slow I'm afraid",
+  "Snooze you lose, we already had tea.",
+  "You'll have to pay closer attention next time, this round's been and gone"]
 
