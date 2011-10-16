@@ -4,6 +4,9 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /stats
+  script: displaystats.py
+  
 - url: /.*
   script: mrsdoyle.py
 

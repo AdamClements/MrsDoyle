@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title>Mrs. Doyle's statistics page</title>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart', 'annotatedtimeline']});
+      
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawCharts);
+
+      // Callback that creates and populates our charts
+      function drawCharts() {
+        var options = {'title':'Who has drunk the most tea via Mrs Doyle (all time)?',
+                       'width':1000,
+                       'height':500};
+                       
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Drinker');
+        data.addColumn('number', 'Cups drunk');
+        data.addRows([
+          {% for drinker in usertotals %}
+            ['{{ drinker.key.name }}', {{ drinker.cupsDrunk }}],
+          {% endfor %}
+        ]);
+
+        // Instantiate and draw this chart, passing in some options.
+        var all_time_drunk_chart = new google.visualization.PieChart(document.getElementById('all_time_drunk_div'));
+        all_time_drunk_chart.draw(data, options);
+        
+        // ----------------------
+        
+        var options = {'title':'Who has been luckiest so far (and so is more likely to get picked next)?',
+                       'width':1000,
+                       'height':500};
+                       
+        // Create the data table.
+        data = new google.visualization.DataTable();
+        data.addColumn('string', 'Drinker');
+        data.addColumn('number', 'Relative probability');
+        data.addRows([
+          {% for drinker in usertotals %}
+            {% ifnotequal drinker.cupsMade 0 %}
+              ['{{ drinker.key.name }}', {{ drinker.cupsDrunk }} / {{drinker.cupsMade}}],
+            {% endifnotequal %}
+          {% endfor %}
+        ]);
+
+        // Instantiate and draw this chart, passing in some options.
+        var luckiest_chart = new google.visualization.PieChart(document.getElementById('luckiest_so_far_div'));
+        luckiest_chart.draw(data, options);
+        
+        // --------------------
+        
+        /* This is actually quite tricky given the current data. gql doesn't let you do counts inline :(
+        var options = {'title':'Who has drunk when in the last week?',
+                       'width':1000,
+                       'height':500};
+                       
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Date');
+        data.addColumn('string', 'Drinker');
+        data.addRows([
+          {% for drinker in pastweek %}
+            [new Date({{ drinker.date|date:"Y" }}, {{drinker.date|date:"n"}}, {{ drinker.date|date:"j" }}), '{{ drinker.drinker }}'],
+          {% endfor %}
+        ]);
+
+        // Instantiate and draw this chart, passing in some options.
+        var all_time_drunk_chart = new google.visualization.AnnotatedTimeLine(document.getElementById('last_week_drunk_div'));
+        all_time_drunk_chart.draw(data, options);*/
+        
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="all_time_drunk_div" style="width:1000; height:500"></div>
+    <div id="luckiest_so_far_div" style="width:1000; height:500"></div>
+  </body>
+</html>
