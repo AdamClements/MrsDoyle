@@ -82,23 +82,6 @@ class XmppHandler(xmpp_handlers.CommandHandler):
 
   def unhandled_command(self, message=None):
     message.reply("I don't have any secret easter egg commands.....")
-        
-  def debug_command(self, message=None):
-    message.reply("In order to save your soul, the temptation to game the system has been removed and Mrs Doyle is now inscrutable")
-    
-  def testDist_command(self, message=None):
-    global drinkers
-    
-    drinkers = set(["amanda@touchtype-online.com", "george@touchtype-online.com", "paul@paulbutcher.com", "alex@touchtype-online.com"])
-    results = dict(zip(drinkers, [0,0,0,0]))
-    
-    for x in range(100):
-      choice = selectByMadeVsDrunkRatio(drinkers)
-      results[choice] = results[choice] + 1
-      
-    for x in results.keys():
-      message.reply(x + ": " + str(results[x]) + " given a made drunk ratio of " + str(getMadeDrunkRatio(x)))
-      
 
   def text_message(self, message=None):
     global NOBACKOUT
