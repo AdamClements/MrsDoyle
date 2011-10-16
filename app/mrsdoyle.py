@@ -128,6 +128,13 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       send_random(fromaddr, RUDE)
       return
       
+    # And sometimes people take no crap.
+    if re.search(TRIGGER_GOAWAY, message.body, re.IGNORECASE):
+      talker.askme=False
+      talker.put()
+      send_random(fromaddr, NO_TEA_TODAY)
+      return
+      
     # See if we're expecting an answer as regards tea preferences
     if fromaddr in settingprefs:
       talker.teaprefs = message.body
@@ -138,13 +145,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     if teacountdown:    
       if fromaddr in drinkers:
         send_random(fromaddr, NOBACKOUT)
-        return
-        
-      if re.search(TRIGGER_GOAWAY, message.body, re.IGNORECASE):
-        talker.askme=False
-        talker.put()
-        send_random(fromaddr, NO_TEA_TODAY)
-        return
+        return        
     
       if re.search(TRIGGER_YES, message.body, re.IGNORECASE):
         drinkers.add(fromaddr)
