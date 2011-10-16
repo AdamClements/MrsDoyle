@@ -9,16 +9,16 @@ TRIGGER_RUDE = r"fuck|shit|bollocks|bitch|bastard|penis|cock|hell |piss|retard|c
 #(I apologise for any offence caused, but we had to be comprehensive in order to rebuke the foul mouthed)
 
 # Responses
-GREETING = set([
+GREETING = [
   "Well hello dear", 
   "Top o' the mornin' to ya", 
   "Hello", 
   "Hi", 
   "Good morning father", 
   "Beautiful day outside isn't it?", 
-  "I'm feeling fat, and sassy"])
+  "I'm feeling fat, and sassy"]
   
-WANT_TEA = set ([
+WANT_TEA = [
   "Will you have a cup of tea?", 
   "Will you have a cup of tea father?", 
   "We were just about to have a cup of tea, will you join us?", 
@@ -28,16 +28,16 @@ WANT_TEA = set ([
   "Hot beverage?", 
   "Tea for two, two for tea... will you join us?",
   "What would you say to a cup father?",
-  "Fancy a cup o' the hot stuff?"])
+  "Fancy a cup o' the hot stuff?"]
   
-NOBACKOUT = set([
+NOBACKOUT = [
   "I heard you already, tea's coming up",
   "Your fate is secured, back out now and the whole system crumbles. You *will* have tea.", 
   "You are already in the list of tea drinkers. There's no getting out of it now.", 
   "Too late for that, you know you want tea really.",
-  "I can't hear you, I'm on my way to the kitchen"])
+  "I can't hear you, I'm on my way to the kitchen"]
   
-AHGRAND = set([
+AHGRAND = [
   "Ah, grand! I'll wait a couple of minutes and see if anyone else wants one", 
   "Champion.", 
   "You won't regret it!", 
@@ -45,9 +45,9 @@ AHGRAND = set([
   "I'm so glad!", 
   "Marvellous!", 
   "Oh good, I do like a cup of tea!", 
-  "Fabulous!"])
+  "Fabulous!"]
   
-AH_GO_ON = set([
+AH_GO_ON = [
   "Ah, go on! Won't you just have a cup", 
   "There's childers in Africa who can't even have tea. Won't you just have a cup", 
   "Ah go on go on go on", 
@@ -56,36 +56,36 @@ AH_GO_ON = set([
   "It would make me so happy if you'd just have a cup", 
   "A cup of tea a day keeps the doctor away.", 
   "Go on, it'll do you a world of good.",
-  "Are you sure, Father? There's cocaine in it! "])
+  "Are you sure, Father? There's cocaine in it! "]
   
-GOOD_IDEA = set([
+GOOD_IDEA = [
   "Fantastic idea, I'll see who else wants one and get back to you in a couple of minutes", 
   "I was just about to suggest the same thing. I'll see who else wants one", 
   "Coming right up... in a couple of minutes", 
-  "You do have the best ideas, I'll see who else will join us"])
+  "You do have the best ideas, I'll see who else will join us"]
   
-ON_YOUR_OWN = set([
+ON_YOUR_OWN = [
   "You're on your own I'm afraid, nobody else wants one!", 
   "What? Well, this is embarrassing... nobody else seems to want tea :(", 
   "Well, this is practically unheard of, I could convince *nobody* to have a cup", 
-  "Sad times indeed, tea for one today"])
+  "Sad times indeed, tea for one today"]
   
-WELL_VOLUNTEERED = set([
+WELL_VOLUNTEERED = [
   "Well volunteered! The following other people want tea!",
   "Be a love and put the kettle on would you?",
   "You know what, I think it's your turn to make the tea now I think about it.",
   "Polly put the kettle on, kettle on, kettle on. You are Polly in this game.",
-  "Why not stretch those weary legs and have a wander over to the kitchen. Say, while you're there...."])
+  "Why not stretch those weary legs and have a wander over to the kitchen. Say, while you're there...."]
   
-OTHEROFFERED = set([
+OTHEROFFERED = [
   " has been kind enough to make the tea, I'd do it myself only I don't have arms",
   " has been kind enough to make the tea",
   " kindly offered to make the tea",
   " is about to selflessly put the kettle on",
   " is today's lucky tea lady",
-  " will soon bring you a warm fuzzy feeling in a cup"])
+  " will soon bring you a warm fuzzy feeling in a cup"]
   
-HUH = set([
+HUH = [
   "I don't understand what you're saying...",
   "If it's not about tea, I'm afraid I'm not really interested...",
   "Pardon?",
@@ -100,22 +100,22 @@ HUH = set([
   "I'm afraid I'm just not familiar with this new slang you young people use.",
   "Oh, no, not cocaine. God, what am I on about? No, what d'you call them. Raisins. ",
   "Football, football, football, football, football, football, football, football, football... what you men see in it, I don't know. ",
-  "You always say that!"])
+  "You always say that!"]
   
-RUDE = set([
+RUDE = [
   "Now that's no way to talk to a lady",
   "Wash your mouth out with soap and water!",
   "Well that's not very polite is it?",
   "You won't get any tea talking like that!",
   "Ah, it's a bit much for me, father. 'Feck' this and 'feck' that. 'You big bastard'. Oh, dreadful language! 'You big hairy arse', 'You big fecker'. Fierce stuff! And of course, the f-word, father, the bad f-word, worse than 'feck' - you know the one I mean.",
-  "'Eff you'. 'Eff your 'effin' wife'. Oh, I don't know why they have to use language like that. 'I'll stick this 'effin' pitchfork up your hole', oh, that was another one, oh, yes!",])
+  "'Eff you'. 'Eff your 'effin' wife'. Oh, I don't know why they have to use language like that. 'I'll stick this 'effin' pitchfork up your hole', oh, that was another one, oh, yes!"]
   
-HOW_TO_TAKE_IT = set([
+HOW_TO_TAKE_IT = [
   "How do you take your tea?",
   "And how do you take it?",
-  "How do you like it?"])
+  "How do you like it?"]
   
-NO_TEA_TODAY = set([
+NO_TEA_TODAY = [
   ":( Alright, I won't bother you again. Say hello if you change your mind",
-  "Oh... I'm sorry, I'll leave you alone. Let me know if you change your mind though"])
+  "Oh... I'm sorry, I'll leave you alone. Let me know if you change your mind though"]
 
