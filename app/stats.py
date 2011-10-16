@@ -25,3 +25,15 @@ def statDrinker(name, made=0):
 def statRound(pName, pCups):
   newRound = PerRoundStats(maker=pName, cups=pCups)
   newRound.put()
+
+def getMadeDrunkRatio(pName):
+  totals = PerUserTotals.get_by_key_name(key_names=pName)
+  if totals == None or totals.cupsDrunk == 0:
+    return 1
+  
+  # Avoid a divide by zero. Also bias it a bit so newbies think
+  # they're getting free tea for a while and get hooked.
+  if totals.cupsMade == 0:
+    return totals.cupsDrunk / 1
+    
+  return totals.cupsDrunk / float(totals.cupsMade)

@@ -53,6 +53,29 @@ def howTheyLikeItClause(message, talker):
     settingprefs.add(fromaddr)
     return   
       
+def selectByMadeVsDrunkRatio(drinkers):
+  # Build a dictionary mapping the contents of drinkers onto their made drunk ratio
+  probs = dict()
+  probTotal = 0.0
+  
+  for person in drinkers:
+    ratio = getMadeDrunkRatio(person)
+    probs[person] = ratio
+    probTotal += ratio
+    
+  # Now if we generate a random point between 0 and the total probs, then iterate through
+  # the dictionary of listeners, summing the probabilities as we go, as soon as the probs
+  # tip over the total, that person has been randomly selected with a weight.
+  goalNumber = probTotal * random.random()
+  probSum = 0.0
+  for person in probs.keys():
+    probSum += probs[person]
+    if probSum >= goalNumber:
+      return person
+      
+  # We probably had a floating point rounding error. Randomly select the first person in the list :P    
+  return drinkers[0]
+
 class XmppHandler(xmpp_handlers.CommandHandler):
   """Handler class for all XMPP activity."""
 
@@ -61,6 +84,20 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         
   def debug_command(self, message=None):
     message.reply("In order to save your soul, the temptation to game the system has been removed and Mrs Doyle is now inscrutable")
+    
+  def testDist_command(self, message=None):
+    global drinkers
+    
+    drinkers = set(["amanda@touchtype-online.com", "george@touchtype-online.com", "paul@paulbutcher.com", "alex@touchtype-online.com"])
+    results = dict(zip(drinkers, [0,0,0,0]))
+    
+    for x in range(100):
+      choice = selectByMadeVsDrunkRatio(drinkers)
+      results[choice] = results[choice] + 1
+      
+    for x in results.keys():
+      message.reply(x + ": " + str(results[x]) + " given a made drunk ratio of " + str(getMadeDrunkRatio(x)))
+      
 
   def text_message(self, message=None):
     global NOBACKOUT
@@ -149,9 +186,9 @@ class DoThis(webapp.RequestHandler):
         for n in drinkers:
           send_random(n, ON_YOUR_OWN)
       elif len(drinkers) > 0:        
-        # Select someone who wasn't the last person to make the tea
-        doublejeopardy = teamaker = random.sample(filter(lambda n : n != doublejeopardy, drinkers), 1)[0]
-
+        # Select someone who wasn't the last person to make the tea 
+        doublejeopardy = teamaker = selectByMadeVsDrunkRatio(filter(lambda n : n != doublejeopardy, drinkers))
+        
         for person in drinkers:
           if person == teamaker:
             send_random(person, WELL_VOLUNTEERED)
