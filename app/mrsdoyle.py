@@ -32,7 +32,7 @@ class Roster(db.Model):
 def get_roster():
   return Roster.all().fetch(limit=999)
   
-def howTheyLikeItClause(messago, talker):
+def howTheyLikeItClause(message, talker):
   global TRIGGER_TEAPREFS
   global HOW_TO_TAKE_IT
   
