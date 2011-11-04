@@ -5,8 +5,8 @@ TRIGGER_YES = r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|y
 TRIGGER_TEA = r"cuppa|tea|brew|cup|drink|beverage|refreshment"
 TRIGGER_GOAWAY = r"go away|busy|from home|not today"
 TRIGGER_TEAPREFS = r"milk|sugar|white|black|roibos"
-TRIGGER_RUDE = r"fuck|shit|bollocks|bitch|bastard|penis|cock|hell |piss|retard|cunt|swype|coffee|nuance"
-#(I apologise for any offence caused, but we had to be comprehensive in order to rebuke the foul mouthed)
+TRIGGER_RUDE = "ZnVja3xzaGl0fGJvbGxvY2tzfGJpdGNofGJhc3RhcmR8cGVuaXN8Y29ja3xoZWxsIHxwaXNzfHJl\ndGFyZHxjdW50fGNvZmZlZQ=="
+#(If you decode this and are offended, it's your own fault. It is a list of things mrs doyle will shout at you for saying...)
 
 # Responses
 GREETING = [

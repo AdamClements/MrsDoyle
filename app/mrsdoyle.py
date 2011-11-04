@@ -3,6 +3,7 @@ import random
 import re
 import wsgiref.handlers
 import cgi
+import base64
 from google.appengine.api import xmpp
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -110,7 +111,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     talker.put()
     
     # Mrs Doyle takes no crap
-    if re.search(TRIGGER_RUDE, message.body, re.IGNORECASE):
+    if re.search(base64.b64decode(TRIGGER_RUDE), message.body, re.IGNORECASE):
       send_random(fromaddr, RUDE)
       return
       
