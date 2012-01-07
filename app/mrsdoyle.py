@@ -17,6 +17,7 @@ from conversation import *
 from stats import *
 
 drinkers = set([])
+informed = set([])
 settingprefs = set([])
 teacountdown = False
 doublejeopardy = ""
@@ -78,6 +79,9 @@ def selectByMadeVsDrunkRatio(drinkers):
   # We probably had a floating point rounding error. Randomly select the first person in the list :P    
   return drinkers[0]
 
+def getSalutation(jid):
+  return jid.split("@")[0].replace(".", " ").title() 
+
 def buildWellVolunteeredMessage(person):
   finalMessage = random.sample(WELL_VOLUNTEERED, 1)[0] + '\n'
  
@@ -85,7 +89,7 @@ def buildWellVolunteeredMessage(person):
     if drinker != person:
       temp = Roster.get_by_key_name(drinker)
       teapref = temp.teaprefs
-      finalMessage += " * " + drinker.split("@")[0].replace(".", " ").title() + " ("+teapref+")"
+      finalMessage += " * " + getSalutation(drinker) + " ("+teapref+")"
  
   return finalMessage
 
@@ -201,7 +205,7 @@ class DoThis(webapp.RequestHandler):
             
             xmpp.send_message(person, buildWellVolunteeredMessage(person))
           else:
-            send_random(person, OTHEROFFERED, teamaker.split("@")[0].title())
+            send_random(person, OTHEROFFERED, getSalutation(teamaker))
             statDrinker(person)
         
       teacountdown = False     
