@@ -16,6 +16,7 @@ GREETING = [
   "Hi", 
   "Good morning father", 
   "Beautiful day outside isn't it?", 
+  "How do?",
   "I'm feeling fat, and sassy"]
   
 WANT_TEA = [
@@ -25,7 +26,11 @@ WANT_TEA = [
   "Join us in a cup of tea?", 
   "Tea perchance?", 
   "Could I interest you in a brew?", 
-  "Hot beverage?", 
+  "Hot beverage?",
+  "Take time for tea?",
+  "You look thirsty dear, tea?",
+  "You know what I fancy, a cuppa. Will you be joining us?", 
+  "Will you have a cup of tea? I *probably* won't choose you to make it..."
   "Tea for two, two for tea... will you join us?",
   "What would you say to a cup father?",
   "Fancy a cup o' the hot stuff?"]
@@ -43,6 +48,9 @@ AHGRAND = [
   "You won't regret it!", 
   "Wonderful!", 
   "I'm so glad!", 
+  "Oh I _am_ pleased!",
+  "Perfect!",
+  "Lovely",
   "Marvellous!", 
   "Oh good, I do like a cup of tea!", 
   "Fabulous!"]
@@ -62,17 +70,25 @@ GOOD_IDEA = [
   "Fantastic idea, I'll see who else wants one and get back to you in a couple of minutes", 
   "I was just about to suggest the same thing. I'll see who else wants one", 
   "Coming right up... in a couple of minutes", 
+  "What a delightful idea! I'll let you know who else is in",
+  "Oh yes, let's! I'll ask around",
+  "Tea you say? What a wonderful thought, I'll see who else agrees",
   "You do have the best ideas, I'll see who else will join us"]
   
 ON_YOUR_OWN = [
   "You're on your own I'm afraid, nobody else wants one!", 
   "What? Well, this is embarrassing... nobody else seems to want tea :(", 
   "Well, this is practically unheard of, I could convince *nobody* to have a cup", 
-  "Sad times indeed, tea for one today"]
+  "Sad times indeed, tea for one today",
+  "There was nobody... nobody at all, I'm so sorry!",
+  "Not _one_ other person, can you believe it?",
+  ":( I'm sorry, looks like you'll have to make it yourself"]
   
 WELL_VOLUNTEERED = [
   "Well volunteered! The following other people want tea!",
   "Be a love and put the kettle on would you?",
+  "Well, somebody has to make the tea, this time it's you",
+  "Your time has come... Go make the tea.",
   "You know what, I think it's your turn to make the tea now I think about it.",
   "Polly put the kettle on, kettle on, kettle on. You are Polly in this game.",
   "Why not stretch those weary legs and have a wander over to the kitchen. Say, while you're there...."]
@@ -80,6 +96,9 @@ WELL_VOLUNTEERED = [
 OTHEROFFERED = [
   " has been kind enough to make the tea, I'd do it myself only I don't have arms",
   " has been kind enough to make the tea",
+  " has been awarded the honour of providing you with tea",
+  " is going to make tea for you, isn't that nice?",
+  " will be bringing you some tea, don't forget to say thanks",
   " kindly offered to make the tea",
   " is about to selflessly put the kettle on",
   " is today's lucky tea lady",
