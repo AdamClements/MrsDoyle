@@ -122,6 +122,12 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     
     fromaddr = self.request.get('from').split("/")[0]    
     talker = Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
+    
+    # If they showed up in the middle of a round, ask them if they want tea in
+    # the normal way after we've responded to this message
+    if(talker.askme == False and teacountdown):
+      xmpp.send_presence(jid=person.jid, presence_type = xmpp.PRESENCE_TYPE_PROBE)
+
     talker.askme=True
     talker.put()
     
@@ -190,6 +196,7 @@ class DoThis(webapp.RequestHandler):
       global teacountdown
       global doublejeopardy    
       global lastround  
+      global informed
       
       if len(drinkers) == 1:
         for n in drinkers:
@@ -211,6 +218,7 @@ class DoThis(webapp.RequestHandler):
       teacountdown = False     
       drinkers = set([])
       settingprefs = set([])
+      informed = set([])
       lastround = datetime.now()
     
 
@@ -218,12 +226,14 @@ class Register(webapp.RequestHandler):
     def post(self):
       global WANT_TEA
       global teacountdown
+      global informed
       
       fromaddr = self.request.get('from').split("/")[0]    
-      Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
+      person = Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
       
-      if(teacountdown):
+      if(teacountdown and person.askme and fromaddr not in informed):
         send_random(fromaddr, WANT_TEA)
+        informed.add(fromaddr)
       
 def main():
   app = webapp.WSGIApplication([
