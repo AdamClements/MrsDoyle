@@ -8,6 +8,8 @@ TRIGGER_TEAPREFS = r"milk|sugar|white|black|roibos"
 TRIGGER_RUDE = "ZnVja3xzaGl0fGJvbGxvY2tzfGJpdGNofGJhc3RhcmR8cGVuaXN8Y29ja3xoZWxsIHxwaXNzfHJl\ndGFyZHxjdW50fGNvZmZlZQ=="
 #(If you decode this and are offended, it's your own fault. It is a list of things mrs doyle will shout at you for saying...)
 
+NEWBIE_GREETING = "Well hello dear, my name is Mrs Doyle. If you ever want tea, just ask me and I'll see what I can do! Of course if you're busy and don't want me bugging you, just say so and I'll back off."
+
 # Responses
 GREETING = [
   "Well hello dear", 

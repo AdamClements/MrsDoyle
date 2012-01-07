@@ -30,6 +30,7 @@ class Roster(db.Model):
   jid = db.StringProperty(required=True)
   teaprefs = db.StringProperty(required=False, default="")
   askme = db.BooleanProperty(required=False, default=True)
+  newbie = db.BooleanProperty(required=False, default=True)
 
 def get_roster():
   return Roster.all().fetch(limit=999)
@@ -228,12 +229,18 @@ class DoThis(webapp.RequestHandler):
 class Register(webapp.RequestHandler):
     def post(self):
       global WANT_TEA
+      global NEWBIE_GREETING
       global teacountdown
       global informed
       
       fromaddr = self.request.get('from').split("/")[0]    
       person = Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
       
+      if(person.newbie):
+        xmpp.send_message(fromaddr, NEWBIE_GREETING)
+        person.newbie = False
+        person.put()
+
       if(not person.askme):
         xmpp.send_presence(fromaddr, status=":( Haven't heard from " + getSalutation(fromaddr) + " in a while...")
 
