@@ -141,8 +141,11 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       talker.askme=False
       talker.put()
       send_random(fromaddr, NO_TEA_TODAY)
+      xmpp.send_presence(fromaddr, status=":( Leaving " + getSalutation(fromaddr) + " alone. So alone...")
       return
       
+    xmpp.send_presence(fromaddr, status="")
+
     # See if we're expecting an answer as regards tea preferences
     if fromaddr in settingprefs:
       talker.teaprefs = message.body
@@ -231,6 +234,9 @@ class Register(webapp.RequestHandler):
       fromaddr = self.request.get('from').split("/")[0]    
       person = Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
       
+      if(not person.askme):
+        xmpp.send_presence(fromaddr, status=":( Haven't heard from " + getSalutation(fromaddr) + " in a while...")
+
       if(teacountdown and person.askme and fromaddr not in informed):
         send_random(fromaddr, WANT_TEA)
         informed.add(fromaddr)
