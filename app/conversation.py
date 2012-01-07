@@ -4,7 +4,7 @@ TRIGGER_HELLO = r"hi|hello|morning|afternoon|evening|hey|sup"
 TRIGGER_YES = r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|yup|affirmative|yarr|yah|please|sure|okay|alright|yep|go on|certainly"
 TRIGGER_TEA = r"cuppa|tea|brew|cup|drink|beverage|refreshment"
 TRIGGER_GOAWAY = r"go away|busy|from home|not today"
-TRIGGER_TEAPREFS = r"milk|sugar|white|black|roibos"
+TRIGGER_TEAPREFS = r"milk|sugar|white|black|roibos|chai|green tea|ceylon|camomile|herbal tea"
 TRIGGER_RUDE = "ZnVja3xzaGl0fGJvbGxvY2tzfGJpdGNofGJhc3RhcmR8cGVuaXN8Y29ja3xoZWxsIHxwaXNzfHJl\ndGFyZHxjdW50fGNvZmZlZQ=="
 #(If you decode this and are offended, it's your own fault. It is a list of things mrs doyle will shout at you for saying...)
 
