@@ -185,15 +185,10 @@ class DoThis(webapp.RequestHandler):
         
         for person in drinkers:
           if person == teamaker:
-            send_random(person, WELL_VOLUNTEERED)
             statDrinker(person, len(drinkers))
             statRound  (person, len(drinkers))
             
-            for drinker in drinkers:
-              if drinker != person:
-                temp = Roster.get_by_key_name(drinker)
-                teapref = temp.teaprefs
-                xmpp.send_message(person, drinker.split("@")[0].title() + "("+teapref+")")
+            xmpp.send_message(person, buildWellVolunteeredMessage(person))
           else:
             send_random(person, OTHEROFFERED, teamaker.split("@")[0].title())
             statDrinker(person)
@@ -202,6 +197,17 @@ class DoThis(webapp.RequestHandler):
       drinkers = set([])
       settingprefs = set([])
       lastround = datetime.now()
+    
+    def buildWellVolunteeredMessage(person):
+      finalMessage = person + random.sample(WELL_VOLUNTEERED, 1)[0] + '\n'
+
+      for drinker in drinkers:
+        if drinker != person:
+          temp = Roster.get_by_key_name(drinker)
+          teapref = temp.teaprefs
+          finalMessage += drinker.split("@")[0].replace(".", " ").title() + " ("+teapref+")"
+
+      return finalMessage
 
 class Register(webapp.RequestHandler):
     def post(self):
