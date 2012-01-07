@@ -78,6 +78,17 @@ def selectByMadeVsDrunkRatio(drinkers):
   # We probably had a floating point rounding error. Randomly select the first person in the list :P    
   return drinkers[0]
 
+def buildWellVolunteeredMessage(person):
+  finalMessage = random.sample(WELL_VOLUNTEERED, 1)[0] + '\n'
+ 
+  for drinker in drinkers:
+    if drinker != person:
+      temp = Roster.get_by_key_name(drinker)
+      teapref = temp.teaprefs
+      finalMessage += " * " + drinker.split("@")[0].replace(".", " ").title() + " ("+teapref+")"
+ 
+  return finalMessage
+
 class XmppHandler(xmpp_handlers.CommandHandler):
   """Handler class for all XMPP activity."""
 
@@ -198,16 +209,6 @@ class DoThis(webapp.RequestHandler):
       settingprefs = set([])
       lastround = datetime.now()
     
-    def buildWellVolunteeredMessage(person):
-      finalMessage = person + random.sample(WELL_VOLUNTEERED, 1)[0] + '\n'
-
-      for drinker in drinkers:
-        if drinker != person:
-          temp = Roster.get_by_key_name(drinker)
-          teapref = temp.teaprefs
-          finalMessage += drinker.split("@")[0].replace(".", " ").title() + " ("+teapref+")"
-
-      return finalMessage
 
 class Register(webapp.RequestHandler):
     def post(self):
