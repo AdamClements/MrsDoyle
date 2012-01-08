@@ -117,6 +117,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global TRIGGER_RUDE
     global TRIGGER_GOAWAY
     global TRIGGER_ADDPERSON
+    global TRIGGER_TEAPREFS
     
     global teacountdown
     global drinkers
@@ -159,10 +160,12 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     
     if teacountdown:    
       if fromaddr in drinkers:
-        if re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
+        if re.search(TRIGGER_TEAPREFS, message.body, re.IGNORECASE):
           xmpp.send_message(fromaddr, "So you like your tea '" + message.body + "'?")
           talker.teaprefs = message.body
           talker.put()
+        elif re.search(TRIGGER_YES, message.body, re.IGNORECASE):
+          xmpp.send_message(fromaddr, "Okay!")
         else:
           send_random(fromaddr, NOBACKOUT)
         return        
