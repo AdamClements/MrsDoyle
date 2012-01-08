@@ -4,13 +4,18 @@ TRIGGER_HELLO = r"hi|hello|morning|afternoon|evening|hey|sup"
 TRIGGER_YES = r"yes|yeh|ya|booyah|ok|please|totally|definitely|absolutely|yeah|yup|affirmative|yarr|yah|please|sure|okay|alright|yep|go on|certainly"
 TRIGGER_TEA = r"cuppa|tea|brew|cup|drink|beverage|refreshment"
 TRIGGER_GOAWAY = r"go away|busy|from home|not today"
+TRIGGER_ADDPERSON = r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b"
 TRIGGER_TEAPREFS = r"milk|sugar|white|black|roibos|chai|green tea|ceylon|camomile|herbal tea"
 TRIGGER_RUDE = "ZnVja3xzaGl0fGJvbGxvY2tzfGJpdGNofGJhc3RhcmR8cGVuaXN8Y29ja3xoZWxsIHxwaXNzfHJl\ndGFyZHxjdW50fGNvZmZlZQ=="
 #(If you decode this and are offended, it's your own fault. It is a list of things mrs doyle will shout at you for saying...)
 
+# Responses
 NEWBIE_GREETING = "Well hello dear, my name is Mrs Doyle. If you ever want tea, just ask me and I'll see what I can do! Of course if you're busy and don't want me bugging you, just say so and I'll back off."
 
-# Responses
+ADDPERSON = [
+  "Oh, I'll go introduce myself then!",
+  "Another potential tea drinker? Perfect!"]
+
 GREETING = [
   "Well hello dear", 
   "Top o' the mornin' to ya", 

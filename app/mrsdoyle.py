@@ -109,12 +109,14 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global RUDE
     global NO_TEA_TODAY
     global JUST_MISSED
+    global ADDPERSON
     
     global TRIGGER_HELLO
     global TRIGGER_YES
     global TRIGGER_TEA
     global TRIGGER_RUDE
     global TRIGGER_GOAWAY
+    global TRIGGER_ADDPERSON
     
     global teacountdown
     global drinkers
@@ -166,7 +168,12 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         
       else:
         send_random(fromaddr, AH_GO_ON)
-        
+    
+    elif re.search(TRIGGER_ADDPERSON, message.body, re.IGNORECASE):
+      emailtoinvite = re.search("("+TRIGGER_ADDPERSON+")", message.body, re.IGNORECASE).group(0)
+      xmpp.send_invite(emailtoinvite)
+      send_random(fromaddr, ADDPERSON)
+
     elif re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
       send_random(fromaddr, GOOD_IDEA)
       howTheyLikeItClause(message.body, talker)
