@@ -154,11 +154,17 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       talker.teaprefs = message.body
       talker.put()
       settingprefs.remove(fromaddr)
+      xmpp.send_message(fromaddr, "Okay!")
       return
     
     if teacountdown:    
       if fromaddr in drinkers:
-        send_random(fromaddr, NOBACKOUT)
+        if re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
+          xmpp.send_message(fromaddr, "So you like your tea '" + message.body + "'?")
+          talker.teaprefs = message.body
+          talker.put()
+        else:
+          send_random(fromaddr, NOBACKOUT)
         return        
     
       if re.search(TRIGGER_YES, message.body, re.IGNORECASE):
