@@ -26,8 +26,10 @@ Usage tips:
 * Any mention of tea, brew, cuppa etc will start a round, so be careful what you say to her if you don't actually want tea!
 * The first time you say yes (or "please" or "sure" etc.) to a cup of tea, she will ask you how you like it. If you answer her, she will tell whoever has to make the tea how you like it. She will also remember and use this for next time too.
 * If you want to change how you take your tea, simply tell her by saying something like "yes, milk no sugar please" (the comma is the important bit) in response to her asking you whether you want a cup of tea. Again she will remember this until you tell her other wise.
+* You can also tell her how you want your tea at any point after saying yes but before the round is over.
 * Once you have said yes, there is no backing out.
-* If you are busy and do not wish to be disturbed, simply say so and she will leave you alone for the rest of the day.
+* If you are busy and do not wish to be disturbed, simply say so and she will leave you alone until you next talk to her (she may set a sulky status until you do!)
+* If you want to invite new people to take part, you can simply tell Mrs Doyle about them and she will go invite them to chat and introduce herself!
 * Once you have had a few cups of tea, go to <yourappname>.appspot.com/stats to see some interesting statistics about how many cups of tea have been drunk as well as who's been luckiest in terms of cups made vs drunk!
 
 Finally
