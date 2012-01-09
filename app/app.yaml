@@ -1,14 +1,14 @@
 application: mrsdoyletheteabot
-version: 1
+version: 2
 runtime: python
 api_version: 1
 
 handlers:
 - url: /stats
-  script: displaystats.py
+  script: stats/displaystats.py
   
 - url: /.*
-  script: mrsdoyle.py
+  script: bot/mrsdoyle.py
 
 inbound_services:
 - xmpp_message
