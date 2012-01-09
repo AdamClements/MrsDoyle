@@ -208,7 +208,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     else:
       send_random(fromaddr, HUH)
     
-class DoThis(webapp.RequestHandler):
+class ProcessTeaRound(webapp.RequestHandler):
     def post(self):
       global ON_YOUR_OWN
       global WELL_VOLUNTEERED
@@ -270,7 +270,7 @@ class Register(webapp.RequestHandler):
       
 def main():
   app = webapp.WSGIApplication([
-      ('/maketea', DoThis),
+      ('/maketea', ProcessTeaRound),
       ('/_ah/xmpp/message/chat/', XmppHandler),
       ('/_ah/xmpp/presence/available/', Register),
       ('/_ah/xmpp/subscription/subscribe/', Register),
