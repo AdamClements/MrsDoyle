@@ -40,7 +40,7 @@ def howTheyLikeItClause(message, talker):
   global HOW_TO_TAKE_IT
   
   fromaddr = talker.jid
-  
+
   # Try to work out if this includes a how they like it clause
   clauses = message.split(",")
   if len(clauses) > 1:
@@ -90,7 +90,7 @@ def buildWellVolunteeredMessage(person):
     if drinker != person:
       temp = Roster.get_by_key_name(drinker)
       teapref = temp.teaprefs
-      finalMessage += " * " + getSalutation(drinker) + " ("+teapref+")"
+      finalMessage += " * " + getSalutation(drinker) + " ("+teapref+")" + '\n'
  
   return finalMessage
 
