@@ -22,9 +22,6 @@ settingprefs = set([])
 teacountdown = False
 doublejeopardy = ""
 lastround = datetime.now()
-
-def send_random(recipient, choices, prefix=""):
-  xmpp.send_message(recipient, prefix + random.sample(choices, 1)[0])
   
 class Roster(db.Model):
   jid = db.StringProperty(required=True)
@@ -105,19 +102,12 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global GREETING
     global AHGRAND
     global GOOD_IDEA
-    global HUH
-    global RUDE
     global NO_TEA_TODAY
     global JUST_MISSED
-    global ADDPERSON
     global WANT_TEA
     
-    global TRIGGER_HELLO
     global TRIGGER_YES
     global TRIGGER_TEA
-    global TRIGGER_RUDE
-    global TRIGGER_GOAWAY
-    global TRIGGER_ADDPERSON
     global TRIGGER_TEAPREFS
     
     global teacountdown
@@ -137,19 +127,9 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     talker.askme=True
     talker.put()
     
-    # Mrs Doyle takes no crap
-    if re.search(base64.b64decode(TRIGGER_RUDE), message.body, re.IGNORECASE):
-      send_random(fromaddr, RUDE)
-      return
-      
-    # And sometimes people take no crap.
-    if re.search(TRIGGER_GOAWAY, message.body, re.IGNORECASE):
-      talker.askme=False
-      talker.put()
-      send_random(fromaddr, NO_TEA_TODAY)
-      xmpp.send_presence(fromaddr, status=":( Leaving " + getSalutation(fromaddr) + " alone. So alone...", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
-      return
-      
+    if SwearFilter.send_message(message.body, talker) return
+    if GoAwayCheck.send_message(message.body, talker) return
+              
     xmpp.send_presence(fromaddr, status="", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
 
     # See if we're expecting an answer as regards tea preferences
@@ -179,13 +159,12 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         
       else:
         send_random(fromaddr, AH_GO_ON)
+        
+      return
     
-    elif re.search(TRIGGER_ADDPERSON, message.body, re.IGNORECASE):
-      emailtoinvite = re.search("("+TRIGGER_ADDPERSON+")", message.body, re.IGNORECASE).group(0)
-      xmpp.send_invite(emailtoinvite)
-      send_random(fromaddr, ADDPERSON)
+    if AddPerson.send_message(message.body, talker) return
 
-    elif re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
+    if re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
       send_random(fromaddr, GOOD_IDEA)
       howTheyLikeItClause(message.body, talker)
       
@@ -198,15 +177,13 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       doittask = Task(countdown="120", url="/maketea")
       doittask.add()
       teacountdown = True
+      return      
       
-    elif re.search(TRIGGER_HELLO, message.body, re.IGNORECASE):
-      send_random(fromaddr, GREETING)
-      
-    elif re.search(TRIGGER_YES, message.body, re.IGNORECASE) and (datetime.now() - lastround) < timedelta(seconds=120):
+    if re.search(TRIGGER_YES, message.body, re.IGNORECASE) and (datetime.now() - lastround) < timedelta(seconds=120):
       send_random(fromaddr, JUST_MISSED)
+      return
       
-    else:
-      send_random(fromaddr, HUH)
+    if RandomChatter.send_message(message.body, talker) return
     
 class ProcessTeaRound(webapp.RequestHandler):
     def post(self):
