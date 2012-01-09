@@ -110,6 +110,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     global NO_TEA_TODAY
     global JUST_MISSED
     global ADDPERSON
+    global WANT_TEA
     
     global TRIGGER_HELLO
     global TRIGGER_YES
@@ -130,7 +131,8 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     # If they showed up in the middle of a round, ask them if they want tea in
     # the normal way after we've responded to this message
     if(talker.askme == False and teacountdown):
-      xmpp.send_presence(jid=person.jid, presence_type = xmpp.PRESENCE_TYPE_PROBE)
+      send_random(fromaddr, WANT_TEA)
+      informed.add(fromaddr)
 
     talker.askme=True
     talker.put()
@@ -145,10 +147,10 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       talker.askme=False
       talker.put()
       send_random(fromaddr, NO_TEA_TODAY)
-      xmpp.send_presence(fromaddr, status=":( Leaving " + getSalutation(fromaddr) + " alone. So alone...")
+      xmpp.send_presence(fromaddr, status=":( Leaving " + getSalutation(fromaddr) + " alone. So alone...", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
       return
       
-    xmpp.send_presence(fromaddr, status="")
+    xmpp.send_presence(fromaddr, status="", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
 
     # See if we're expecting an answer as regards tea preferences
     if fromaddr in settingprefs:
@@ -258,7 +260,9 @@ class Register(webapp.RequestHandler):
         person.put()
 
       if(not person.askme):
-        xmpp.send_presence(fromaddr, status=":( Haven't heard from " + getSalutation(fromaddr) + " in a while...")
+        xmpp.send_presence(fromaddr, status=":( Haven't heard from " + getSalutation(fromaddr) + " in a while...", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
+      else:
+        xmpp.send_presence(fromaddr, status="", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
 
       if(teacountdown and person.askme and fromaddr not in informed):
         send_random(fromaddr, WANT_TEA)
