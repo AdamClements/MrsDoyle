@@ -162,6 +162,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       howTheyLikeItClause(message.body, talker)
       
       drinkers.add(fromaddr)
+      informed.add(fromaddr)
       
       for person in get_roster():
         if person.askme and not person.jid == fromaddr:
