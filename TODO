@@ -1,0 +1,2 @@
+* Make it so that talker.settingPrefs gets reset when the round ends, at the moment they can start it during a tea round, and it will still take what they say as their preference the next thing they say, even if it's been ages.
+* 

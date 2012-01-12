@@ -4,9 +4,9 @@ import re
 import wsgiref.handlers
 import cgi
 import base64
+import data.Roster
 from google.appengine.api import xmpp
 from google.appengine.api import users
-from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.ereporter import report_generator
 from google.appengine.ext.webapp import template
@@ -18,16 +18,9 @@ from stats import *
 
 drinkers = set([])
 informed = set([])
-settingprefs = set([])
 teacountdown = False
 doublejeopardy = ""
 lastround = datetime.now()
-  
-class Roster(db.Model):
-  jid = db.StringProperty(required=True)
-  teaprefs = db.StringProperty(required=False, default="")
-  askme = db.BooleanProperty(required=False, default=True)
-  newbie = db.BooleanProperty(required=False, default=True)
 
 def get_roster():
   return Roster.all().fetch(limit=999)
@@ -51,7 +44,8 @@ def howTheyLikeItClause(message, talker):
   # If they haven't given any preferences before
   if talker.teaprefs == "":
     send_random(fromaddr, HOW_TO_TAKE_IT)
-    settingprefs.add(fromaddr)
+    talker.settingPrefs = True
+    talker.put()
     return   
       
 def selectByMadeVsDrunkRatio(drinkers):
@@ -112,7 +106,6 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     
     global teacountdown
     global drinkers
-    global settingprefs
     global lastround
     
     fromaddr = self.request.get('from').split("/")[0]    
@@ -133,10 +126,10 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     xmpp.send_presence(fromaddr, status="", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
 
     # See if we're expecting an answer as regards tea preferences
-    if fromaddr in settingprefs:
+    if talker.settingPrefs:
       talker.teaprefs = message.body
+      talker.settingPrefs = False
       talker.put()
-      settingprefs.remove(fromaddr)
       xmpp.send_message(fromaddr, "Okay!")
       return
     
@@ -216,7 +209,6 @@ class ProcessTeaRound(webapp.RequestHandler):
         
       teacountdown = False     
       drinkers = set([])
-      settingprefs = set([])
       informed = set([])
       lastround = datetime.now()
     
