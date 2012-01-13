@@ -6,4 +6,4 @@ class Roster(db.Model):
   askme             = db.BooleanProperty(required=True, default=True)
   newbie            = db.BooleanProperty(required=True, default=True)
   hasDoubleJeopardy = db.BooleanProperty(required=True, default=False)
-  isSettingPrefs    = db.BooreanProperty(required=True, default=False)
+  isSettingPrefs    = db.BooleanProperty(required=True, default=False)

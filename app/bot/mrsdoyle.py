@@ -4,7 +4,7 @@ import re
 import wsgiref.handlers
 import cgi
 import base64
-import data.Roster
+
 from google.appengine.api import xmpp
 from google.appengine.api import users
 from google.appengine.ext import webapp
@@ -13,8 +13,10 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import xmpp_handlers
 from google.appengine.api.taskqueue import Task
 
-from conversation import *
+from data.Roster import Roster
+import bot.responders.SwearFilter
 from stats import *
+from conversation import *
 
 drinkers = set([])
 informed = set([])
@@ -120,8 +122,8 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     talker.askme=True
     talker.put()
     
-    if SwearFilter.send_message(message.body, talker) return
-    if GoAwayCheck.send_message(message.body, talker) return
+    if SwearFilter().send_message(message.body, talker): return
+    if GoAwayCheck().send_message(message.body, talker): return
               
     xmpp.send_presence(fromaddr, status="", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
 
@@ -155,7 +157,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         
       return
     
-    if AddPerson.send_message(message.body, talker) return
+    if AddPerson.send_message(message.body, talker): return
 
     if re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
       send_random(fromaddr, GOOD_IDEA)
@@ -177,7 +179,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       send_random(fromaddr, JUST_MISSED)
       return
       
-    if RandomChatter.send_message(message.body, talker) return
+    if RandomChatter.send_message(message.body, talker): return
     
 class ProcessTeaRound(webapp.RequestHandler):
     def post(self):
