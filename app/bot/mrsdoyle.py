@@ -3,7 +3,6 @@ import random
 import re
 import wsgiref.handlers
 import cgi
-import base64
 
 from google.appengine.api import xmpp
 from google.appengine.api import users
@@ -13,10 +12,10 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import xmpp_handlers
 from google.appengine.api.taskqueue import Task
 
-from data.Roster import Roster
-import bot.responders.SwearFilter
+from bot.conversation import *
+from bot.responders import *
+from bot.data import *
 from stats import *
-from conversation import *
 
 drinkers = set([])
 informed = set([])
@@ -45,8 +44,8 @@ def howTheyLikeItClause(message, talker):
       
   # If they haven't given any preferences before
   if talker.teaprefs == "":
-    send_random(fromaddr, HOW_TO_TAKE_IT)
-    talker.settingPrefs = True
+    Responder().send_random(fromaddr, HOW_TO_TAKE_IT)
+    talker.isSettingPrefs = True
     talker.put()
     return   
       
@@ -116,21 +115,21 @@ class XmppHandler(xmpp_handlers.CommandHandler):
     # If they showed up in the middle of a round, ask them if they want tea in
     # the normal way after we've responded to this message
     if(talker.askme == False and teacountdown):
-      send_random(fromaddr, WANT_TEA)
+      Responder().send_random(fromaddr, WANT_TEA)
       informed.add(fromaddr)
 
     talker.askme=True
     talker.put()
-    
-    if SwearFilter().send_message(message.body, talker): return
-    if GoAwayCheck().send_message(message.body, talker): return
+
+    if SwearFilter().process_message(message.body, talker): return
+    if GoAwayCheck().process_message(message.body, talker): return
               
     xmpp.send_presence(fromaddr, status="", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
 
     # See if we're expecting an answer as regards tea preferences
-    if talker.settingPrefs:
+    if talker.isSettingPrefs:
       talker.teaprefs = message.body
-      talker.settingPrefs = False
+      talker.isSettingPrefs = False
       talker.put()
       xmpp.send_message(fromaddr, "Okay!")
       return
@@ -144,23 +143,23 @@ class XmppHandler(xmpp_handlers.CommandHandler):
         elif re.search(TRIGGER_YES, message.body, re.IGNORECASE):
           xmpp.send_message(fromaddr, "Okay!")
         else:
-          send_random(fromaddr, NOBACKOUT)
+          Responder().send_random(fromaddr, NOBACKOUT)
         return        
     
       if re.search(TRIGGER_YES, message.body, re.IGNORECASE):
         drinkers.add(fromaddr)
-        send_random(fromaddr, AHGRAND)        
+        Responder().send_random(fromaddr, AHGRAND)        
         howTheyLikeItClause(message.body, talker)       
         
       else:
-        send_random(fromaddr, AH_GO_ON)
+        Responder().send_random(fromaddr, AH_GO_ON)
         
       return
     
-    if AddPerson.send_message(message.body, talker): return
+    if AddPerson().process_message(message.body, talker): return
 
     if re.search(TRIGGER_TEA, message.body, re.IGNORECASE):
-      send_random(fromaddr, GOOD_IDEA)
+      Responder().send_random(fromaddr, GOOD_IDEA)
       howTheyLikeItClause(message.body, talker)
       
       drinkers.add(fromaddr)
@@ -176,70 +175,70 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       return      
       
     if re.search(TRIGGER_YES, message.body, re.IGNORECASE) and (datetime.now() - lastround) < timedelta(seconds=120):
-      send_random(fromaddr, JUST_MISSED)
+      Responder().send_random(fromaddr, JUST_MISSED)
       return
       
-    if RandomChatter.send_message(message.body, talker): return
+    if RandomChatter().process_message(message.body, talker): return
     
 class ProcessTeaRound(webapp.RequestHandler):
-    def post(self):
-      global ON_YOUR_OWN
-      global WELL_VOLUNTEERED
-      global OTHEROFFERED
+  def post(self):
+    global ON_YOUR_OWN
+    global WELL_VOLUNTEERED
+    global OTHEROFFERED
+    
+    global drinkers
+    global teacountdown
+    global doublejeopardy    
+    global lastround  
+    global informed
+    
+    if len(drinkers) == 1:
+      for n in drinkers:
+        Responder().send_random(n, ON_YOUR_OWN)
+    elif len(drinkers) > 0:        
+      # Select someone who wasn't the last person to make the tea 
+      doublejeopardy = teamaker = selectByMadeVsDrunkRatio(filter(lambda n : n != doublejeopardy, drinkers))
       
-      global drinkers
-      global teacountdown
-      global doublejeopardy    
-      global lastround  
-      global informed
+      for person in drinkers:
+        if person == teamaker:
+          statDrinker(person, len(drinkers))
+          statRound  (person, len(drinkers))
+          
+          xmpp.send_message(person, buildWellVolunteeredMessage(person))
+        else:
+          Responder().send_random(person, OTHEROFFERED, getSalutation(teamaker))
+          statDrinker(person)
       
-      if len(drinkers) == 1:
-        for n in drinkers:
-          send_random(n, ON_YOUR_OWN)
-      elif len(drinkers) > 0:        
-        # Select someone who wasn't the last person to make the tea 
-        doublejeopardy = teamaker = selectByMadeVsDrunkRatio(filter(lambda n : n != doublejeopardy, drinkers))
-        
-        for person in drinkers:
-          if person == teamaker:
-            statDrinker(person, len(drinkers))
-            statRound  (person, len(drinkers))
-            
-            xmpp.send_message(person, buildWellVolunteeredMessage(person))
-          else:
-            send_random(person, OTHEROFFERED, getSalutation(teamaker))
-            statDrinker(person)
-        
-      teacountdown = False     
-      drinkers = set([])
-      informed = set([])
-      lastround = datetime.now()
+    teacountdown = False     
+    drinkers = set([])
+    informed = set([])
+    lastround = datetime.now()
     
 
 class Register(webapp.RequestHandler):
-    def post(self):
-      global WANT_TEA
-      global NEWBIE_GREETING
-      global teacountdown
-      global informed
-      
-      fromaddr = self.request.get('from').split("/")[0]    
-      person = Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
-      
-      if(person.newbie):
-        xmpp.send_message(fromaddr, NEWBIE_GREETING)
-        person.newbie = False
-        person.put()
+  def post(self):
+    global WANT_TEA
+    global NEWBIE_GREETING
+    global teacountdown
+    global informed
+    
+    fromaddr = self.request.get('from').split("/")[0]    
+    person = Roster.get_or_insert(key_name=fromaddr, jid=fromaddr)
+    
+    if(person.newbie):
+      xmpp.send_message(fromaddr, NEWBIE_GREETING)
+      person.newbie = False
+      person.put()
 
-      if(not person.askme):
-        xmpp.send_presence(fromaddr, status=":( Haven't heard from " + getSalutation(fromaddr) + " in a while...", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
-      else:
-        xmpp.send_presence(fromaddr, status="", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
+    if(not person.askme):
+      xmpp.send_presence(fromaddr, status=":( Haven't heard from " + getSalutation(fromaddr) + " in a while...", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
+    else:
+      xmpp.send_presence(fromaddr, status="", presence_type=xmpp.PRESENCE_TYPE_AVAILABLE)
 
-      if(teacountdown and person.askme and fromaddr not in informed):
-        send_random(fromaddr, WANT_TEA)
-        informed.add(fromaddr)
-      
+    if(teacountdown and person.askme and fromaddr not in informed):
+      Responder().send_random(fromaddr, WANT_TEA)
+      informed.add(fromaddr)
+    
 def main():
   app = webapp.WSGIApplication([
       ('/maketea', ProcessTeaRound),
