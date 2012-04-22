@@ -5,10 +5,10 @@ api_version: 1
 
 handlers:
 - url: /stats
-  script: stats/displaystats.py
+  script: displaystats.py
   
 - url: /.*
-  script: bot/mrsdoyle.py
+  script: mrsdoyle.py
 
 inbound_services:
 - xmpp_message
