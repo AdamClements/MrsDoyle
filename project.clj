@@ -4,4 +4,4 @@
                 now has roughly 80% more parenthesis as is feeling
                 more miserable than ever."
   :dependencies [[org.clojure/clojure "1.4.0"]
-                 [xmpp-clj            "0.2.1"]])
+                 [quit-yo-jibber      "0.3.2"]])

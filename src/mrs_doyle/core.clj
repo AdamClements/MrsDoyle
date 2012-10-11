@@ -1,10 +1,8 @@
 (ns mrs-doyle.core
-  (:require [xmpp-clj :as xmpp]))
+  (:require [quit-yo-jibber :refer :all]))
 
-(def connection-info {:username "mrs.doyle.teabot@gmail.com"
-                      :password "mXA7oaC7"
-                      :host     "talk.google.com"
-                      :domain   "gmail.com"})
+(defn password-info []
+  (read-string (slurp "credentials.clj")))
 
 (defn greeting [message]
   (when (re-find #"[hH]ello" (:body message))
@@ -23,3 +21,7 @@
                       sweary
                       greeting
                       (constantly "Umm")]))
+
+(defn new-bot []
+  (make-connection
+   (password-info) :message (var command-chain)))
