@@ -40,6 +40,7 @@ WANT_TEA = [
   "Will you have a cup of tea? I *probably* won't choose you to make it..."
   "Tea for two, two for tea... will you join us?",
   "What would you say to a cup father?",
+  "If a man has no tea in him, he is incapable of understanding truth and beauty. Won't you have a cup?",
   "Fancy a cup o' the hot stuff?"]
   
 NOBACKOUT = [
@@ -58,6 +59,7 @@ AHGRAND = [
   "Oh I _am_ pleased!",
   "Perfect!",
   "Lovely",
+  "Absolutely splendiferous",
   "Marvellous!", 
   "Oh good, I do like a cup of tea!", 
   "Fabulous!"]
@@ -71,10 +73,12 @@ AH_GO_ON = [
   "It would make me so happy if you'd just have a cup", 
   "A cup of tea a day keeps the doctor away.", 
   "Go on, it'll do you a world of good.",
+  "If a man has no tea in him, he is incapable of understanding truth and beauty.",
   "Are you sure, Father? There's cocaine in it! "]
   
 GOOD_IDEA = [
   "Fantastic idea, I'll see who else wants one and get back to you in a couple of minutes", 
+  "Yay, tea!"
   "I was just about to suggest the same thing. I'll see who else wants one", 
   "Coming right up... in a couple of minutes", 
   "What a delightful idea! I'll let you know who else is in",
@@ -96,6 +100,7 @@ WELL_VOLUNTEERED = [
   "Be a love and put the kettle on would you?",
   "Well, somebody has to make the tea, this time it's you",
   "Your time has come... Go make the tea.",
+  "You know it's a wonderful thing you're about to do...",
   "You know what, I think it's your turn to make the tea now I think about it.",
   "Polly put the kettle on, kettle on, kettle on. You are Polly in this game.",
   "Why not stretch those weary legs and have a wander over to the kitchen. Say, while you're there...."]
