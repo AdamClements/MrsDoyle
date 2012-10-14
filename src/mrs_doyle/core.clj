@@ -1,8 +1,14 @@
 (ns mrs-doyle.core
-  (:require [quit-yo-jibber :refer :all]))
+  (:require [quit-yo-jibber :refer :all]
+            [clojure.string :refer [split capitalize join]]))
 
 (defn password-info []
   (read-string (slurp "credentials.clj")))
+
+(defn salutation [email]
+  (let [name (first (split email #"@"))
+        parts (split name #"\.")]
+    (join " "(map capitalize parts))))
 
 (defn greeting [message]
   (when (re-find #"[hH]ello" (:body message))
