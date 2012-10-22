@@ -4,4 +4,5 @@
                 now has roughly 80% more parenthesis as is feeling
                 more miserable than ever."
   :dependencies [[org.clojure/clojure "1.4.0"]
-                 [quit-yo-jibber      "0.3.2"]])
+                 [quit-yo-jibber      "0.3.2"]]
+  :main mrs-doyle.core)
