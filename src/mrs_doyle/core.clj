@@ -17,10 +17,10 @@
 
 (defn like-drinking-tea []
   ;;STUB
-  ["adam@swiftkey.net", "adam.clements@gmail.com"])
+  #{"adam@swiftkey.net", "adam.clements@gmail.com"})
 
 (defn potential-drinkers [conn from]
-  (remove #{from} (intersection (like-drinking-tea) (online conn))))
+  (disj (intersection (set (like-drinking-tea)) (set (online conn))) from))
 
 (defn greeting [conn msg]
   (when (re-find #"[hH]ello" (:body msg))
@@ -40,23 +40,12 @@
   (some #(% conn message) [tea-prompt
                            sweary
                            greeting
-                           (constantly "Umm")]))
+                           (constantly "Ummm")]))
 
 (defn new-bot []
-  (make-connection
-   (password-info) :message (var command-chain)))
+  (make-connection (password-info) (var command-chain)))
 
 (defn -main [& args]
   (new-bot)
   (println "I'm awake!")
   (doseq [line (read-line)]))
-
-
-
-
-
-
-
-
-
-
