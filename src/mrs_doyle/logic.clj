@@ -1,10 +1,10 @@
 (ns mrs-doyle.logic
   (:require [mrs-doyle.util :refer :all]
             [quit-yo-jibber :as xmpp]
-            [clojure.set :refer [intersection difference union]]))
+            [clojure.set :refer [intersection difference union]]
+            [mrs-doyle.conversation :as conv]))
 
 (defn like-drinking-tea []
-  ;;STUB
   #{"adam@swiftkey.net", "adam.clements@gmail.com"})
 
 (defn potential-drinkers [conn from]
@@ -29,37 +29,14 @@
                       #"[hH]ello" greeting
                       (constantly "Ummmm")))
 
+(defn reply [msg] ())
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(defn decision-tree [conn msg]
+  (let [said    (:body msg)
+        speaker (:from msg)]
+    (cond (round-running) (cond
+                           (conv/yes? said) (add-to-round! speaker)
+                           :else            (conv/ah-go-on))
+          :else           (cond
+                           (conv/tea? said) (have-tea! conn speaker)
+                           (conv/hello?)    (conv/hello)))))
