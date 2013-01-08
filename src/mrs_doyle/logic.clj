@@ -13,8 +13,11 @@
 
 (defn have-tea! [conn speaker] nil)
 
+(defn people-where [collection criteria]
+  (db/with-mongo conn (map :person (db/fetch collection :where criteria))))
+
 (defn like-drinking-tea []
-  #{"adam@swiftkey.net", "adam.clements@gmail.com"})
+  (people-where :preferences {:amenable true}))
 
 ;; derived
 (defn potential-drinkers [conn from]
