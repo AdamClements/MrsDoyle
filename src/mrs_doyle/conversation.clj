@@ -17,7 +17,7 @@
 (def rude?      (respond-to (decode-str "ZnVja3xzaGl0fGJvbGxvY2tzfGJpdGNofGJhc3RhcmR8cGVuaXN8Y29ja3xoZWxsIHxwaXNzfHJldGFyZHxjdW50fGNvZmZlZQ==")))
 
 
-(def greet
+(def greeting
   (one-of
    "Well hello dear",
    "Top o' the mornin' to ya",
